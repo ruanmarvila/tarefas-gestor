@@ -21,8 +21,9 @@ pip install -r requirements.txt
 
 ### Crie a Tabela no Banco de Dados
 ```python
-from database.db import criar_tabela
-criar_tabela()
+from database.db import criar_tabela_tarefas, criar_tabela_usuarios
+criar_tabela_tarefas()
+criar_tabela_usuarios()
 ```
 
 ### Execute o Programa
