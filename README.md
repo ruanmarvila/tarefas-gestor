@@ -32,6 +32,5 @@ python main.py
 
 ## 🛠️: Próximos Passos
 - Adiconar interface com Tkinter;
-- Adicionar sistema de login;
 - Adiconar filtros e ordenação de tarefas;
 - Criar uma API RESTful (FastAPI ou Flask).
