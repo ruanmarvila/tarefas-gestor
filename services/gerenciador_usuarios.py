@@ -50,11 +50,7 @@ class GerenciadorUsuarios:
         
         if not self.usuario_logado:
             return "Nenhum usuário logado."
-        cursor.execute("DELETE FROM usuarios WHERE id = ? AND email = ? AND senha = ?",
-                       (self.usuario_logado.id, email, senha))
-        if cursor.rowcount == 0:
-                conn.close()
-                return "Não foi possível excluir o usuário."
+        cursor.execute("DELETE FROM usuarios WHERE id = ?", (self.usuario_logado.id,))
         
         conn.commit()
         conn.close()
