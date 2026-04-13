@@ -1,7 +1,7 @@
 from database.db import conectar
 from models.usuarios import Usuario
 
-class GerenciadosUsuarios:
+class GerenciadorUsuarios:
     def __init__(self):
         self.usuario_logado = None
 
