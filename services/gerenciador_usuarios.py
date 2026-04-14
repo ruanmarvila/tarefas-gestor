@@ -8,6 +8,9 @@ class GerenciadorUsuarios:
 
 
     def cadastrar_usuario(self, nome, email, senha):
+        if not nome.strip() or not email.strip() or not senha.strip():
+            return False
+        
         conn = conectar()
         cursor = conn.cursor()
 
