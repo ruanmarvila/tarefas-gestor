@@ -1,3 +1,4 @@
+import bcrypt
 from database.db import conectar
 from models.usuarios import Usuario
 
@@ -15,6 +16,9 @@ class GerenciadorUsuarios:
             conn.close()
             return False
 
+        salt = bcrypt.gensalt()
+        hashed_senha = bcrypt.hashpw(senha.encode("utf-8"), salt)
+        
         cursor.execute("""INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)""",
                        (nome, email, senha))
         
@@ -26,13 +30,14 @@ class GerenciadorUsuarios:
         conn = conectar()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM usuarios WHERE email = ? AND senha = ?", (email, senha))
+        cursor.execute("SELECT * FROM usuarios WHERE email = ?", (email,))
         usuario = cursor.fetchone()
 
         if usuario:
-            self.usuario_logado = Usuario(id=usuario[0], nome=usuario[1], email=usuario[2], senha=usuario[3])
-            conn.close()
-            return True
+            if bcrypt.checkpw(senha.encode("utf-8"), usuario[3]):
+                self.usuario_logado = Usuario(id=usuario[0], nome=usuario[1], email=usuario[2], senha=usuario[3])
+                conn.close()
+                return True
         conn.close()
         return False
 
