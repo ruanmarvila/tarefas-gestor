@@ -21,9 +21,11 @@ Este é um sistema simples de gerenciamento de tarefas feito em Python, onde voc
 - Criptografar senhas com bcrypt
 
 ### Interface
-- Aprimorar a interface em Tkinter
+- ~~Construir uma interface gráfica com Tkinter~~
+- ~~Aprimorar a interface em Tkinter~~
 
 ### Funcionalidades
+- ~~Sistema de Login~~
 - Adiconar filtros e ordenação de tarefas
 - Adicionar edição de tarefas
 
