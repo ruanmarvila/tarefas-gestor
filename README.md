@@ -18,7 +18,7 @@ Este é um sistema simples de gerenciamento de tarefas feito em Python, onde voc
 
 ## Próximos Passos:
 ### Segurança
-- Criptografar senhas com bcrypt
+- ~~Criptografar senhas com bcrypt~~
 
 ### Interface
 - ~~Construir uma interface gráfica com Tkinter~~
