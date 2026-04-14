@@ -13,7 +13,7 @@ def criar_tabela_usuarios():
     cursor.execute("""CREATE TABLE IF NOT EXISTS usuarios(
                    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                    nome TEXT NOT NULL,
-                   email TEXT NOT NULL,
+                   email TEXT NOT NULL UNIQUE,
                    senha TEXT NOT NULL
                    )
                    """)
