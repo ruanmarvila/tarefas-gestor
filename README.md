@@ -18,16 +18,16 @@ Este é um sistema simples de gerenciamento de tarefas feito em Python, onde voc
 
 ## Próximos Passos:
 ### Segurança
-- ~~Criptografar senhas com bcrypt~~
+- [x] Criptografar senhas com bcrypt
 
 ### Interface
-- ~~Construir uma interface gráfica com Tkinter~~
-- ~~Aprimorar a interface em Tkinter~~
+- [x] Construir uma interface gráfica com Tkinter
+- [x] Aprimorar a interface em Tkinter
 
 ### Funcionalidades
-- ~~Sistema de Login~~
-- Adiconar filtros e ordenação de tarefas
-- Adicionar edição de tarefas
+- [x] Sistema de Login
+- [ ] Adiconar filtros e ordenação de tarefas
+- [ ] Adicionar edição de tarefas
 
 ### Arquitetura
-- Criar uma API RESTful (FastAPI)
+- [ ] Criar uma API RESTful (FastAPI)
