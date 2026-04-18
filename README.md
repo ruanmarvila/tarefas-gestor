@@ -27,7 +27,7 @@ Este é um sistema simples de gerenciamento de tarefas feito em Python, onde voc
 ### Funcionalidades
 - [x] Sistema de Login
 - [ ] Adiconar filtros e ordenação de tarefas
-- [ ] Adicionar edição de tarefas
+- [x] Adicionar edição de tarefas
 
 ### Arquitetura
 - [ ] Criar uma API RESTful (FastAPI)
