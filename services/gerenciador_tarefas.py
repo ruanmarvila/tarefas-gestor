@@ -25,6 +25,30 @@ class GerenciadorTarefas:
         conn.commit()
         conn.close()
         return "✅ Tarefa adicionada."
+
+    def editar_tarefas(self, tarefa_id ,descricao):
+        try:
+            self.verificar_login()
+        except Exception as e:
+            return f"❌ {e}"
+
+        conn = conectar()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "UPDATE tarefas SET descricao = ? WHERE id=? AND usuario_id=?",
+            (descricao, tarefa_id, self.usuario_logado.id)
+        )
+        conn.commit()
+
+        if cursor.rowcount == 0:
+            cursor.close()
+            conn.close()
+            return "Tarefa não encontrada."
+
+        cursor.close()
+        conn.close()
+        return "Tarefa atualizada com sucesso!"
     
     def listar_tarefas(self):
         try:
