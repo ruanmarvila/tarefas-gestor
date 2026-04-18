@@ -133,6 +133,9 @@ class JanelaPrincipal(tk.Tk):
         adicionar_button = ttk.Button(self.tarefas_frame, text="Adicionar Tarefa", command=self.adicionar_tarefa)
         adicionar_button.pack()
 
+        editar_button = ttk.Button(self.tarefas_frame, text="Editar Tarefas", command=self.editar_tarefas)
+        editar_button.pack()
+
         concluir_button = ttk.Button(self.tarefas_frame, text="Concluir Tarefa", command=self.concluir_tarefa)
         concluir_button.pack()
 
@@ -157,7 +160,17 @@ class JanelaPrincipal(tk.Tk):
             resultado = self.gerenciador_tarefas.adicionar_tarefa(descricao)
             messagebox.showinfo("Resultado", resultado)
             self.listar_tarefas()
+            
+    def editar_tarefas(self):
+        tarefa = self.obter_tarefa_selecionada()
+        if tarefa:
+            descricao = simpledialog.askstring("Nova Descrição", "Digite a nova descrição:")
 
+            if descricao:
+                resultado = self.gerenciador_tarefas.editar_tarefas(tarefa.id, descricao)
+                messagebox.showinfo("Resultado", resultado)
+                self.listar_tarefas()
+    
     def listar_tarefas(self):
         #print("Buscando tarefas no banco...")
         self.lista_tarefas.delete(0, tk.END)
