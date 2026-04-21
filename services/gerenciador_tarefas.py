@@ -94,6 +94,53 @@ class GerenciadorTarefas:
         conn.commit()
         conn.close()
         return "✅ Tarefa Concluída!"
+
+    def filtrar_tarefas(self, condicao):
+        try:
+            self.verificar_login()
+        except Exception as e:
+            return f"❌ {e}"
+        
+        if condicao not in ["Concluída", "Pendente"]:
+            return False
+
+        condicoes = {
+            "Pendente": 0,
+            "Concluída": 1
+        }
+        condicao = condicoes[condicao]
+        
+        conn = conectar()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM tarefas WHERE concluida=?", (condicao,))
+        rows = cursor.fetchall()
+        
+        if not rows:
+            conn.close()
+            return "Nenhuma tarefa encontrada."
+
+        conn.close()
+        return [Tarefa(id=row[0], descricao=row[1], concluida=bool(row[2])) for row in rows]
+
+    def ordenar_tarefas(self, ordem_user):
+        if ordem_user.upper() not in ["ASC", "DESC"]:
+            return False
+        
+        ordenacao = ordem_user.upper()
+        
+        conn = conectar()
+        cursor = conn.cursor()
+
+        cursor.execute(f"SELECT * FROM tarefas ORDER BY descricao {ordenacao}")
+        rows = cursor.fetchall()
+
+        if not rows:
+            conn.close()
+            return "Nenhuma tarefa encontrada."
+
+        conn.close()
+        return [Tarefa(id=row[0], descricao=row[1], concluida=bool(row[2])) for row in rows]
     
     def remover_tarefa(self, tarefas_id):
         try:
