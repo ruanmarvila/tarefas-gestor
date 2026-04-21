@@ -5,9 +5,11 @@ class GerenciadorTarefas:
     def __init__(self, usuario_logado=None):
         self.usuario_logado = usuario_logado
 
+
     def verificar_login(self):
         if not self.usuario_logado:
             raise Exception("Você precisa estar logado.")
+
 
     def adicionar_tarefa(self, descricao):
         try:
@@ -25,6 +27,7 @@ class GerenciadorTarefas:
         conn.commit()
         conn.close()
         return "✅ Tarefa adicionada."
+
 
     def editar_tarefas(self, tarefa_id ,descricao):
         try:
@@ -49,7 +52,8 @@ class GerenciadorTarefas:
         cursor.close()
         conn.close()
         return "Tarefa atualizada com sucesso!"
-    
+
+
     def listar_tarefas(self):
         try:
             self.verificar_login()
@@ -62,10 +66,11 @@ class GerenciadorTarefas:
         rows = cursor.fetchall()
         conn.close()
 
-        if not rows:
-            return "Nenhuma tarefa registrada."
+        """if not rows:
+            return "Nenhuma tarefa registrada."""
 
         return [Tarefa(id=row[0], descricao=row[1], concluida=bool(row[2])) for row in rows]
+
 
     def concluir_tarefa(self, tarefa_id):
         try:
@@ -95,6 +100,7 @@ class GerenciadorTarefas:
         conn.close()
         return "✅ Tarefa Concluída!"
 
+
     def filtrar_tarefas(self, condicao):
         try:
             self.verificar_login()
@@ -113,7 +119,8 @@ class GerenciadorTarefas:
         conn = conectar()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM tarefas WHERE concluida=?", (condicao,))
+        cursor.execute("SELECT * FROM tarefas WHERE concluida=? AND usuario_id=?", 
+                       (condicao, self.usuario_logado.id))
         rows = cursor.fetchall()
         
         if not rows:
@@ -122,6 +129,7 @@ class GerenciadorTarefas:
 
         conn.close()
         return [Tarefa(id=row[0], descricao=row[1], concluida=bool(row[2])) for row in rows]
+
 
     def ordenar_tarefas(self, ordem_user):
         if ordem_user.upper() not in ["ASC", "DESC"]:
@@ -132,7 +140,8 @@ class GerenciadorTarefas:
         conn = conectar()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT * FROM tarefas ORDER BY descricao {ordenacao}")
+        cursor.execute(f"SELECT * FROM tarefas WHERE usuario_id=? ORDER BY descricao {ordenacao}",
+                       (self.usuario_logado.id))
         rows = cursor.fetchall()
 
         if not rows:
@@ -141,7 +150,8 @@ class GerenciadorTarefas:
 
         conn.close()
         return [Tarefa(id=row[0], descricao=row[1], concluida=bool(row[2])) for row in rows]
-    
+
+
     def remover_tarefa(self, tarefas_id):
         try:
             self.verificar_login()
