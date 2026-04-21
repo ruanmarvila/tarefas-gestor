@@ -1,4 +1,5 @@
 import bcrypt
+import re
 from database.db import conectar
 from models.usuarios import Usuario
 
@@ -6,17 +7,19 @@ class GerenciadorUsuarios:
     def __init__(self):
         self.usuario_logado = None
 
+    @staticmethod
     def validar_email(email):
         regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         return re.match(regex, email) is not None
 
+
     def cadastrar_usuario(self, nome, email, senha):
         if not nome.strip() or not email.strip() or not senha.strip():
             return False
-
-        if not self.validar_email(email):
-            return False
         
+        if not GerenciadorUsuarios.validar_email(email):
+            return False
+
         conn = conectar()
         cursor = conn.cursor()
 
@@ -27,9 +30,9 @@ class GerenciadorUsuarios:
 
         salt = bcrypt.gensalt()
         hashed_senha = bcrypt.hashpw(senha.encode("utf-8"), salt)
-        
+
         cursor.execute("""INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)""",
-                       (nome, email, senha))
+                       (nome, email, hashed_senha))
         
         conn.commit()
         conn.close()
@@ -57,15 +60,16 @@ class GerenciadorUsuarios:
     def obter_usuario_logado(self):
         return self.usuario_logado
 
-    def excluir_conta(self, email, senha):
-        conn = conectar()
-        conn.execute("PRAGMA foreign_keys = ON")
-        cursor = conn.cursor()
-        
+    def excluir_conta(self):
         if not self.usuario_logado:
             return "Nenhum usuário logado."
+
+        conn = conectar()
+        cursor = conn.cursor()
+        
         cursor.execute("DELETE FROM usuarios WHERE id = ?", (self.usuario_logado.id,))
         
         conn.commit()
         conn.close()
+        self.logout()
         return "Usuário excluído com sucesso."
