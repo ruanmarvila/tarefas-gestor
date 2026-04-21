@@ -29,7 +29,7 @@ class JanelaPrincipal(tk.Tk):
         self.gerenciador_usuarios = gerenciador_usuarios
         self.gerenciador_tarefas = None
         self.title("Gerenciador de Tarefas")
-        self.geometry("600x650")
+        self.geometry("600x600")
 
         self.login_frame = None
         self.tarefas_frame = None
@@ -44,7 +44,7 @@ class JanelaPrincipal(tk.Tk):
         self.login_frame.pack(pady=20)
 
         email_label = ttk.Label(self.login_frame, text="Email:")
-        email_label.grid(row=0, column=0)
+        email_label.grid(row=0, column=0, padx=5, pady=5)
         self.email_entry = ttk.Entry(self.login_frame)
         self.email_entry.grid(row=0, column=1)
 
@@ -60,7 +60,6 @@ class JanelaPrincipal(tk.Tk):
         cadastrar_button.grid(row=3, columnspan=2)
     
     def login(self):
-        print("Tentando logar...")
         email = self.email_entry.get()
         senha = self.senha_entry.get()
 
@@ -100,9 +99,9 @@ class JanelaPrincipal(tk.Tk):
         voltar_button.grid(row=4, columnspan=2)
 
     def cadastrar(self):
-        nome = self.nome_entry.get()
-        email = self.email_entry.get()
-        senha = self.senha_entry.get()
+        nome = self.nome_entry.get().strip()
+        email = self.email_entry.get().lower().strip()
+        senha = self.senha_entry.get().strip()
 
         if self.gerenciador_usuarios.cadastrar_usuario(nome, email, senha):
             messagebox.showinfo("Sucesso", "Cadastro realizado com sucesso!")
@@ -115,7 +114,16 @@ class JanelaPrincipal(tk.Tk):
         self.limpar_telas()
 
         self.tarefas_frame = ttk.Frame(self)
-        self.tarefas_frame.pack(pady=20)
+        self.tarefas_frame.pack(pady=20, fill="both", expand=True)
+
+        ttk.Label(
+            self.tarefas_frame,
+            text="Gerenciador de Tarefas",
+            font=("Arial", 16)
+        ).pack(pady=10)
+
+        lista_frame = ttk.Frame(self.tarefas_frame)
+        lista_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
         self.lista_tarefas = tk.Listbox(
             self.tarefas_frame, 
@@ -128,34 +136,52 @@ class JanelaPrincipal(tk.Tk):
             highlightthickness=0,
             bd=0
             )
-        self.lista_tarefas.pack(pady=10)
 
-        adicionar_button = ttk.Button(self.tarefas_frame, text="Adicionar Tarefa", command=self.adicionar_tarefa)
-        adicionar_button.pack()
+        scrollbar = ttk.Scrollbar(
+            lista_frame,
+            orient="vertical",
+            command=self.lista_tarefas.yview
+        )
 
-        editar_button = ttk.Button(self.tarefas_frame, text="Editar Tarefas", command=self.editar_tarefas)
-        editar_button.pack()
+        self.lista_tarefas.config(yscrollcommand=scrollbar.set)
+        self.lista_tarefas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
 
-        concluir_button = ttk.Button(self.tarefas_frame, text="Concluir Tarefa", command=self.concluir_tarefa)
-        concluir_button.pack()
+        acoes_frame = ttk.LabelFrame(self.tarefas_frame, text="Ações")
+        acoes_frame.pack(pady=10, fill="x", padx=10)
 
-        filtrar_button = ttk.Button(self.tarefas_frame, text="Filtrar Tarefas", command=self.filtrar_tarefas)
-        filtrar_button.pack()
+        botoes_frame = ttk.Frame(acoes_frame)
+        botoes_frame.pack(pady=5)
 
-        ordenar_button = ttk.Button(self.tarefas_frame, text="Ordenar Tarefas", command=self.ordenar_tarefas)
-        ordenar_button.pack()
+        ttk.Button(botoes_frame, text="Adicionar", command=self.adicionar_tarefa)\
+            .grid(row=0, column=0, padx=5, pady=5)
 
-        remover_button = ttk.Button(self.tarefas_frame, text="Remover Tarefa", command=self.remover_tarefa)
-        remover_button.pack()
+        ttk.Button(botoes_frame, text="Editar", command=self.editar_tarefas)\
+            .grid(row=0, column=1, padx=5, pady=5)
 
-        atualizar_button = ttk.Button(self.tarefas_frame, text="Atualizar Tarefas", command=self.listar_tarefas)
-        atualizar_button.pack()
+        ttk.Button(botoes_frame, text="Concluir", command=self.concluir_tarefa)\
+            .grid(row=0, column=2, padx=5, pady=5)
 
-        deslogar_button = ttk.Button(self.tarefas_frame, text="Deslogar", command=self.deslogar)
-        deslogar_button.pack()
+        ttk.Button(botoes_frame, text="Remover", command=self.remover_tarefa)\
+            .grid(row=1, column=0, padx=5, pady=5)
 
-        excluir_button = ttk.Button(self.tarefas_frame, text="Excluir Conta", command=self.excluir_conta)
-        excluir_button.pack()
+        ttk.Button(botoes_frame, text="Filtrar", command=self.filtrar_tarefas)\
+            .grid(row=1, column=1, padx=5, pady=5)
+
+        ttk.Button(botoes_frame, text="Ordenar", command=self.ordenar_tarefas)\
+            .grid(row=1, column=2, padx=5, pady=5)
+
+        ttk.Button(acoes_frame, text="Atualizar", command=self.listar_tarefas)\
+            .pack(pady=5)
+
+        conta_frame = ttk.LabelFrame(self.tarefas_frame, text="Conta")
+        conta_frame.pack(pady=10, fill="x", padx=10)
+
+        ttk.Button(conta_frame, text="Deslogar", command=self.deslogar)\
+            .pack(pady=5)
+
+        ttk.Button(conta_frame, text="Excluir Conta", command=self.excluir_conta)\
+            .pack(pady=5)
 
         self.listar_tarefas()
 
@@ -166,7 +192,7 @@ class JanelaPrincipal(tk.Tk):
             resultado = self.gerenciador_tarefas.adicionar_tarefa(descricao)
             messagebox.showinfo("Resultado", resultado)
             self.listar_tarefas()
-            
+
     def editar_tarefas(self):
         tarefa = self.obter_tarefa_selecionada()
         if tarefa:
@@ -176,21 +202,15 @@ class JanelaPrincipal(tk.Tk):
                 resultado = self.gerenciador_tarefas.editar_tarefas(tarefa.id, descricao)
                 messagebox.showinfo("Resultado", resultado)
                 self.listar_tarefas()
-    
-    def listar_tarefas(self):
-        #print("Buscando tarefas no banco...")
-        self.lista_tarefas.delete(0, tk.END)
 
+    def listar_tarefas(self):
         tarefas = self.gerenciador_tarefas.listar_tarefas()
 
         if isinstance(tarefas, str):
             messagebox.showinfo("Tarefas", tarefas)
             return
 
-        self.tarefas_cache = tarefas
-
-        for tarefa in tarefas:
-            self.lista_tarefas.insert(tk.END, str(tarefa))
+        self.atualizar_lista(tarefas)
 
     def obter_tarefa_selecionada(self):
         try:
@@ -206,7 +226,7 @@ class JanelaPrincipal(tk.Tk):
             resultado = self.gerenciador_tarefas.concluir_tarefa(tarefa.id)
             messagebox.showinfo("Resultado", resultado)
             self.listar_tarefas()
-
+    
     def filtrar_tarefas(self):
         condicao = simpledialog.askstring("Filtro", "Escolha o filtro [Pendente/Concluída]: ")
 
@@ -221,7 +241,7 @@ class JanelaPrincipal(tk.Tk):
                 return
 
             self.atualizar_lista(tarefas)
-        except:
+        except Exception:
             self.listar_tarefas()
             
     def ordenar_tarefas(self):
@@ -238,7 +258,7 @@ class JanelaPrincipal(tk.Tk):
                 return
             
             self.atualizar_lista(tarefas)
-        except:
+        except Exception:
             self.listar_tarefas()
 
     def remover_tarefa(self):
@@ -247,7 +267,6 @@ class JanelaPrincipal(tk.Tk):
             resultado = self.gerenciador_tarefas.remover_tarefa(tarefa.id)
             messagebox.showinfo("Resultado", resultado)
             self.listar_tarefas()
-
 
     def deslogar(self):
         self.gerenciador_tarefas = None
@@ -277,3 +296,10 @@ class JanelaPrincipal(tk.Tk):
             self.cadastro_frame.destroy()
             self.cadastro_frame = None
 
+    def atualizar_lista(self, tarefas):
+        self.lista_tarefas.delete(0, tk.END)
+
+        self.tarefas_cache = tarefas
+        
+        for tarefa in tarefas:
+            self.lista_tarefas.insert(tk.END, str(tarefa))
