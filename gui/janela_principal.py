@@ -29,7 +29,7 @@ class JanelaPrincipal(tk.Tk):
         self.gerenciador_usuarios = gerenciador_usuarios
         self.gerenciador_tarefas = None
         self.title("Gerenciador de Tarefas")
-        self.geometry("400x450")
+        self.geometry("600x650")
 
         self.login_frame = None
         self.tarefas_frame = None
@@ -139,6 +139,12 @@ class JanelaPrincipal(tk.Tk):
         concluir_button = ttk.Button(self.tarefas_frame, text="Concluir Tarefa", command=self.concluir_tarefa)
         concluir_button.pack()
 
+        filtrar_button = ttk.Button(self.tarefas_frame, text="Filtrar Tarefas", command=self.filtrar_tarefas)
+        filtrar_button.pack()
+
+        ordenar_button = ttk.Button(self.tarefas_frame, text="Ordenar Tarefas", command=self.ordenar_tarefas)
+        ordenar_button.pack()
+
         remover_button = ttk.Button(self.tarefas_frame, text="Remover Tarefa", command=self.remover_tarefa)
         remover_button.pack()
 
@@ -199,6 +205,40 @@ class JanelaPrincipal(tk.Tk):
         if tarefa:
             resultado = self.gerenciador_tarefas.concluir_tarefa(tarefa.id)
             messagebox.showinfo("Resultado", resultado)
+            self.listar_tarefas()
+
+    def filtrar_tarefas(self):
+        condicao = simpledialog.askstring("Filtro", "Escolha o filtro [Pendente/Concluída]: ")
+
+        if not condicao:
+            return
+        try:
+            condicao = condicao.strip().capitalize()
+            tarefas = self.gerenciador_tarefas.filtrar_tarefas(condicao)
+
+            if isinstance(tarefas, str):
+                messagebox.showinfo("Tarefas", tarefas)
+                return
+
+            self.atualizar_lista(tarefas)
+        except:
+            self.listar_tarefas()
+            
+    def ordenar_tarefas(self):
+        condicao = simpledialog.askstring("Ordem", "Escolha a ordem [ASC/DESC]: ")
+
+        if not condicao:
+            return
+        try:
+            condicao = condicao.strip().upper()
+            tarefas = self.gerenciador_tarefas.ordenar_tarefas(condicao)
+
+            if isinstance(tarefas, str):
+                messagebox.showinfo("Tarefas", tarefas)
+                return
+            
+            self.atualizar_lista(tarefas)
+        except:
             self.listar_tarefas()
 
     def remover_tarefa(self):
