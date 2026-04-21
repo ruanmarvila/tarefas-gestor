@@ -7,7 +7,7 @@ Este é um sistema simples de gerenciamento de tarefas feito em Python, onde voc
 - **Adicionar Tarefa**: Cria novas tarefas com uma descrição.
 - **Listar Tarefas**: Visualiza todas as tarefas no sistema.
 - **Filtrar Tarefas**: Filtra as tarefas concluídas ou pendentes.
-- **Ordenar Tarefas**: Ordena as tarefas em ordem crescente ou decrescente
+- **Ordenar Tarefas**: Ordena as tarefas em ordem crescente ou decrescente.
 - **Concluir Tarefa**: Marca tarefas como concluídas.
 - **Remover Tarefa**: Exclui tarefas do sistema.
 - **Exclusão de Contas**: Permite o usuário a deletar seus dados.
