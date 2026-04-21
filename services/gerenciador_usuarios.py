@@ -6,9 +6,15 @@ class GerenciadorUsuarios:
     def __init__(self):
         self.usuario_logado = None
 
+    def validar_email(email):
+        regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return re.match(regex, email) is not None
 
     def cadastrar_usuario(self, nome, email, senha):
         if not nome.strip() or not email.strip() or not senha.strip():
+            return False
+
+        if not self.validar_email(email):
             return False
         
         conn = conectar()
