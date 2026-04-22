@@ -141,7 +141,7 @@ class GerenciadorTarefas:
         cursor = conn.cursor()
 
         cursor.execute(f"SELECT * FROM tarefas WHERE usuario_id=? ORDER BY descricao {ordenacao}",
-                       (self.usuario_logado.id))
+                       (self.usuario_logado.id,))
         rows = cursor.fetchall()
 
         if not rows:
