@@ -26,14 +26,14 @@ class GerenciadorTarefas:
         )
         conn.commit()
         conn.close()
-        return "✅ Tarefa adicionada."
+        return "Tarefa adicionada."
 
 
     def editar_tarefas(self, tarefa_id ,descricao):
         try:
             self.verificar_login()
         except Exception as e:
-            return f"❌ {e}"
+            return f"Error: {e}"
 
         conn = conectar()
         cursor = conn.cursor()
@@ -58,7 +58,7 @@ class GerenciadorTarefas:
         try:
             self.verificar_login()
         except Exception as e:
-            return f"❌ {e}"
+            return f"Error: {e}"
 
         conn = conectar()
         cursor = conn.cursor()
@@ -76,7 +76,7 @@ class GerenciadorTarefas:
         try:
             self.verificar_login()
         except Exception as e:
-            return f"❌ {e}"
+            return f"Error: {e}"
         
         conn = conectar()
         cursor = conn.cursor()
@@ -86,11 +86,11 @@ class GerenciadorTarefas:
 
         if resultado is None:
             conn.close()
-            return "❌ Tarefa não encontrada."
+            return "Tarefa não encontrada."
 
         if resultado[0] == 1:
             conn.close()
-            return "⚠ A tarefa já estava concluída!"
+            return "A tarefa já estava concluída!"
 
         cursor.execute(
             "UPDATE tarefas SET concluida = 1 WHERE id = ?",
@@ -98,14 +98,14 @@ class GerenciadorTarefas:
         )
         conn.commit()
         conn.close()
-        return "✅ Tarefa Concluída!"
+        return "Tarefa Concluída!"
 
 
     def filtrar_tarefas(self, condicao):
         try:
             self.verificar_login()
         except Exception as e:
-            return f"❌ {e}"
+            return f"Error: {e}"
         
         if condicao not in ["Concluída", "Pendente"]:
             return False
@@ -156,7 +156,7 @@ class GerenciadorTarefas:
         try:
             self.verificar_login()
         except Exception as e:
-            return f"❌ {e}"
+            return f"Error: {e}"
         
         conn = conectar()
         cursor = conn.cursor()
@@ -166,8 +166,8 @@ class GerenciadorTarefas:
 
         if cursor.rowcount == 0:
             conn.close()
-            return "❌ Tarefa não encontrada."
+            return "Tarefa não encontrada."
 
         conn.commit()
         conn.close()
-        return "🗑️ Tarefa Removida!"
+        return "Tarefa Removida!"
